@@ -80,7 +80,20 @@
         .nav-item.disabled { pointer-events: none; opacity: 0.5; }
 
         .nav-right { display: flex; align-items: center; gap: 15px; }
-        .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        
+        /* THEME TOGGLE BUTTON - YIN YANG STYLE */
+        .theme-toggle { 
+            background: none; border: 1px solid var(--border); 
+            color: var(--text); width: 32px; height: 32px; 
+            border-radius: 50%; cursor: pointer; 
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+        }
+        .theme-toggle i {
+            font-size: 1.1rem;
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Bouncy rotation */
+        }
+        .theme-toggle:hover { border-color: var(--gold); color: var(--gold); }
 
         /* --- LAYOUT --- */
         .container { max-width: 1300px; margin: 0 auto; padding: 80px 20px 40px; }
@@ -133,7 +146,6 @@
         
         .client-card { cursor: pointer; transition: 0.3s; }
         
-        /* Updated Profile Icon (Clickable) */
         .profile-icon { 
             width: 45px; height: 45px; border-radius: 50%; 
             background: var(--bg); border: 1px solid var(--gold); 
@@ -179,11 +191,6 @@
             color: var(--sub); cursor: pointer; transition: 0.3s;
         }
         .close-icon:hover { color: var(--text); }
-        
-        .modal-avatar {
-            width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 20px;
-            border: 2px solid var(--gold); padding: 5px; object-fit: cover;
-        }
 
         /* ========================================= */
         /* MOBILE RESPONSIVE                         */
@@ -227,7 +234,8 @@
 
         <div class="nav-right">
             <button class="theme-toggle" onclick="toggleTheme()">
-                <i class="fa-solid fa-sun" id="theme-icon"></i>
+                <!-- REPLACED ICON WITH YIN-YANG STYLE (HALF STROKE) -->
+                <i class="fa-solid fa-circle-half-stroke" id="theme-icon"></i>
             </button>
             <!-- Added onclick to trigger modal -->
             <div class="profile-icon" onclick="toggleProfile()">
@@ -474,8 +482,11 @@
     function toggleTheme() {
         isDark = !isDark;
         document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
+        
+        // Rotate Icon Animation
         const icon = document.getElementById('theme-icon');
-        icon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+        icon.style.transform = isDark ? 'rotate(0deg)' : 'rotate(180deg)';
+        
         renderLoginChart(); 
         if(currentClient) renderDashChart();
     }
@@ -491,7 +502,6 @@
         goTo('login');
     }
 
-    // Close modal when clicking outside content
     window.onclick = function(event) {
         const modal = document.getElementById('profile-modal');
         if (event.target == modal) {
